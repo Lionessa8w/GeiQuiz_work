@@ -48,6 +48,8 @@ class MainActivity : AppCompatActivity() {
             toast.show()
 
         }
+        val questionTextResId=questionBank[currentIndex].textResId
+        questionTextView.setText(questionTextResId)
     }
 
 
