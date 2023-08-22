@@ -2,7 +2,6 @@ package com.bignerdranch.android.geomain
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.Gravity
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
@@ -11,6 +10,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var trueButton: Button
     private lateinit var falseButton: Button
     private lateinit var nextButton: Button
+    private lateinit var previousButton:Button
     private lateinit var questionTextView: TextView
 
     private val questionBank= listOf(
@@ -31,23 +31,47 @@ class MainActivity : AppCompatActivity() {
         falseButton=findViewById(R.id.false_button)
         nextButton=findViewById(R.id.next_button)
         questionTextView= findViewById(R.id.question_text_view)
+        previousButton=findViewById(R.id.previous_button)
 
 
 
         trueButton.setOnClickListener {
-            val toast=Toast.makeText(this,R.string.correct_toast, Toast.LENGTH_SHORT)
-            toast.setGravity(Gravity.TOP,0,0)
-            toast.show()
-
-
+            changeAnswer(true)
         }
 
         falseButton.setOnClickListener {
-            val toast=Toast.makeText(this,R.string.incorrect_toast,Toast.LENGTH_SHORT)
-            toast.setGravity(Gravity.TOP, 0,160)
-            toast.show()
+            changeAnswer(false)
 
         }
+        nextButton.setOnClickListener {
+            currentIndex=(currentIndex+1)%questionBank.size
+            updateQuestion()
+        }
+        updateQuestion()
+
+        previousButton.setOnClickListener {
+            if (currentIndex in 1 until questionBank.size){
+                currentIndex--
+            }else{
+                currentIndex=questionBank.size-1
+            }
+            updateQuestion()
+        }
+
+    }
+    private fun changeAnswer(userAnswer:Boolean){
+        val currentAnswer=questionBank[currentIndex].answer
+        val message = if (userAnswer==currentAnswer){
+            "Current!"
+        }else{
+            "Incurrent!"
+        }
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
+
+    }
+    private fun updateQuestion(){
+        val questionTextResId=questionBank[currentIndex].textResId
+        questionTextView.setText(questionTextResId)
     }
 
 
