@@ -62,9 +62,9 @@ class MainActivity : AppCompatActivity() {
     private fun changeAnswer(userAnswer:Boolean){
         val currentAnswer=questionBank[currentIndex].answer
         val message = if (userAnswer==currentAnswer){
-            "Current!"
+            "Correct!"
         }else{
-            "Incurrent!"
+            "Incorrect!"
         }
         Toast.makeText(this,message,Toast.LENGTH_SHORT).show()
 
