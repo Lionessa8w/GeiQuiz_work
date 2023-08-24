@@ -7,7 +7,9 @@ import android.widget.Button
 import android.widget.ImageButton
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewmodel.viewModelFactory
 
 private const val TAG = "MainActivity"
 
@@ -17,10 +19,11 @@ class MainActivity : AppCompatActivity() {
     private lateinit var nextButton: ImageButton
     private lateinit var previousButton: ImageButton
     private lateinit var questionTextView: TextView
-    private val quizViewModel: QuizViewModel by lazy {
-        ViewModelProviders.of(this).get(QuizVie wModel::class.java)
-    }
 
+    // если во вьюмодели нет конструктора то вот так
+    private val quizViewModel: QuizViewModel = ViewModelProvider(this)[QuizViewModel::class.java]
+    // или вот так но нужно зависимость прокинуть в [build.gradle]
+    private val viewModel: QuizViewModel by viewModels()
 
     private var count = 0
 
