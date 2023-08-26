@@ -1,12 +1,14 @@
 package com.bignerdranch.android.geomain
 
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.ViewModel
 
 private const val TAG = "QuizViewModel"
 
 class QuizViewModel : ViewModel() {
-    private var questionBank = mutableListOf(
+    private var count:Int = 0
+    var questionBank = mutableListOf(
         Question(R.string.question_australia, true),
         Question(R.string.question_oceans, true),
         Question(R.string.question_mideast, false),
@@ -23,6 +25,9 @@ class QuizViewModel : ViewModel() {
     fun moveToText(){
         currentIndex=(currentIndex+1)%questionBank.size
     }
+
+
+
 
 
 }

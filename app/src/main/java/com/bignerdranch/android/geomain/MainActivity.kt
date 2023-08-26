@@ -9,6 +9,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 
+
 private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() {
@@ -17,12 +18,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var nextButton: ImageButton
     private lateinit var previousButton: ImageButton
     private lateinit var questionTextView: TextView
-    private val quizViewModel: QuizViewModel by lazy {
-        ViewModelProviders.of(this).get(QuizVie wModel::class.java)
-    }
+    private val quizViewModel: QuizViewModel = ViewModelProvider(this)[QuizViewModel::class.java]
+
+    private var count=0
 
 
-    private var count = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,17 +50,17 @@ class MainActivity : AppCompatActivity() {
 
         }
         nextButton.setOnClickListener {
-            currentIndex = (currentIndex + 1) % questionBank.size
+            quizViewModel.moveToText()
             updateQuestion()
             enabledButton(true)
         }
         updateQuestion()
 
         previousButton.setOnClickListener {
-            if (currentIndex in 1 until questionBank.size) {
-                currentIndex--
+            if (quizViewModel.currentIndex in 1 until quizViewModel.questionBank.size) {
+                quizViewModel.currentIndex--
             } else {
-                currentIndex = questionBank.size - 1
+                quizViewModel.currentIndex = quizViewModel.questionBank.size - 1
             }
             updateQuestion()
         }
@@ -93,7 +94,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun changeAnswer(userAnswer: Boolean) {
-        val currentAnswer = questionBank[currentIndex].answer
+        val currentAnswer = quizViewModel.currentQuestionAnswer
         val message = if (userAnswer == currentAnswer) {
             "Correct!"
 
@@ -101,18 +102,12 @@ class MainActivity : AppCompatActivity() {
             "Incorrect!"
         }
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
-
-
-        if (userAnswer == currentAnswer) {
-            count++
-
-        }
-        val currentQuestion: Int = questionBank[currentIndex].textResId
-        if (questionBank.map { it.textResId }.contains(currentQuestion)) {
+        val currentQuestion: Int = quizViewModel.currentQuestionText
+        if (quizViewModel.questionBank.map { it.textResId }.contains(currentQuestion)) {
             enabledButton(false)
-            questionBank.removeAt(currentIndex)
+            quizViewModel.questionBank.removeAt(quizViewModel.currentIndex)
         }
-        if (questionBank.size == 0) {
+        if (quizViewModel.questionBank.size == 0) {
             val result1: Double = (count.toDouble() / 6)
             val result: Int = (result1 * 100).toInt()
             Toast.makeText(
@@ -123,9 +118,15 @@ class MainActivity : AppCompatActivity() {
                 .show()
         }
     }
+    fun countAnswer(userAnswer:Boolean) {
+        if (userAnswer == quizViewModel.currentQuestionAnswer) {
+            count++
+
+        }
+    }
 
     private fun updateQuestion() {
-        val questionTextResId = questionBank[currentIndex].textResId
+        val questionTextResId = quizViewModel.currentQuestionText
         questionTextView.setText(questionTextResId)
     }
 
