@@ -18,31 +18,23 @@ class MainActivity : AppCompatActivity() {
     private lateinit var nextButton: ImageButton
     private lateinit var previousButton: ImageButton
     private lateinit var questionTextView: TextView
-    private val quizViewModel: QuizViewModel = ViewModelProvider(this)[QuizViewModel::class.java]
+    private lateinit var quizViewModel: QuizViewModel
 
     private var count=0
-
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate(Bundle?) called")
         setContentView(R.layout.activity_main)
-
-
-
+        quizViewModel = ViewModelProvider(this)[QuizViewModel::class.java]
         trueButton = findViewById(R.id.true_button)
         falseButton = findViewById(R.id.false_button)
         nextButton = findViewById(R.id.next_button)
         questionTextView = findViewById(R.id.question_text_view)
         previousButton = findViewById(R.id.previous_button)
 
-
-
         trueButton.setOnClickListener {
             changeAnswer(true)
-
         }
 
         falseButton.setOnClickListener {
