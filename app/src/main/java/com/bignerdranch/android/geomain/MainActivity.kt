@@ -107,6 +107,10 @@ class MainActivity : AppCompatActivity() {
             enabledButton(false)
             quizViewModel.questionBank.removeAt(quizViewModel.currentIndex)
         }
+        if (userAnswer == quizViewModel.currentQuestionAnswer) {
+            count++
+
+        }
         if (quizViewModel.questionBank.size == 0) {
             val result1: Double = (count.toDouble() / 6)
             val result: Int = (result1 * 100).toInt()
@@ -117,12 +121,7 @@ class MainActivity : AppCompatActivity() {
             )
                 .show()
         }
-    }
-    fun countAnswer(userAnswer:Boolean) {
-        if (userAnswer == quizViewModel.currentQuestionAnswer) {
-            count++
 
-        }
     }
 
     private fun updateQuestion() {
